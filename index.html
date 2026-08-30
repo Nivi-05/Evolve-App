@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Evolve</title>
+<meta name="theme-color" content="#1B1330">
+<meta name="description" content="Evolve — a continuous personal growth companion.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Evolve">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="top-status" id="offlineBanner">You're offline — your changes will sync later.</div>
+
+<div id="app">
+
+  <button class="settings-fab" id="settingsFab" aria-label="Settings">⚙</button>
+
+  <!-- ================= TODAY ================= -->
+  <section class="screen active" id="screen-today">
+    <div class="header">
+      <div class="greeting-row">
+        <div class="avatar-circle" id="avatarCircle">
+          <span>🌱</span>
+          <span class="level-badge" id="levelBadge">Lv 1</span>
+        </div>
+        <div class="greeting-col">
+          <p class="greeting" id="greetingText">Good morning</p>
+          <p class="today-date" id="todayDateText">Friday, 28 August</p>
+          <p class="day-count" id="dayCount">Day 1</p>
+        </div>
+        <div class="chapter-badge" id="chapterBadge">Chapter 1</div>
+      </div>
+      <div class="glass-card progress-card" style="margin-top:16px;" id="progressCard">
+        <div class="progress-label-row"><span class="progress-label" id="progressLabel">0 of 0 done</span><span class="progress-pct" id="progressPct">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-caption" id="progressCaption">Let's get started.</div>
+      </div>
+      <div class="quest-tabs" id="questTabs">
+        <button class="quest-tab active" data-quest="daily">Daily</button>
+        <button class="quest-tab" data-quest="weekly">Weekly</button>
+        <button class="quest-tab" data-quest="once">66-Day</button>
+      </div>
+    </div>
+    <div class="categories" id="categories"></div>
+    <div class="weekly-goals" id="weeklyGoals"></div>
+    <div class="once-goals" id="onceGoals"></div>
+    <div class="add-habit" id="addHabitBtn"><span class="add-plus">+</span><span>Add a habit</span></div>
+  </section>
+
+  <!-- ================= JOURNEY ================= -->
+  <section class="screen" id="screen-journey">
+    <div class="header" style="padding-bottom:6px;"><p class="page-title">Journey</p></div>
+
+    <div class="journey-hero">
+      <svg class="journey-hero-svg" viewBox="0 0 400 170" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2C2047"/>
+            <stop offset="100%" stop-color="#40325E"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="170" fill="url(#skyGrad)"/>
+        <circle cx="40" cy="26" r="1.4" fill="#fff" opacity="0.6"/>
+        <circle cx="90" cy="16" r="1" fill="#fff" opacity="0.45"/>
+        <circle cx="200" cy="14" r="1.1" fill="#fff" opacity="0.5"/>
+        <circle cx="260" cy="34" r="1" fill="#fff" opacity="0.4"/>
+        <circle cx="150" cy="40" r="1" fill="#fff" opacity="0.4"/>
+        <circle cx="340" cy="46" r="1.3" fill="#fff" opacity="0.55"/>
+        <circle cx="355" cy="52" r="13" fill="#F0CE8F" opacity="0.9"/>
+        <polygon points="0,170 0,110 70,70 150,120 210,85 280,125 400,95 400,170" fill="#342651"/>
+        <polygon points="0,170 0,135 55,100 130,140 200,110 270,150 400,120 400,170" fill="#291F42"/>
+        <path d="M35,170 C80,120 55,95 115,80 C175,65 155,110 220,88 C270,72 250,48 300,32" stroke="#DCC8F5" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="1,13" opacity="0.85"/>
+        <line x1="300" y1="32" x2="300" y2="12" stroke="#F4F0FB" stroke-width="2"/>
+        <polygon points="300,12 316,17 300,22" fill="#F0A0C0"/>
+      </svg>
+      <div class="journey-hero-text">
+        <p class="journey-hero-day" id="journeyHeroDay">Day 1</p>
+        <p class="journey-hero-tagline" id="journeyHeroTagline">You're on your way to becoming unstoppable.</p>
+      </div>
+    </div>
+
+    <div class="milestones-card">
+      <div class="milestones-head">
+        <span class="ml-title">Milestones</span>
+        <span class="ml-count" id="milestoneCount">0 / 5 completed</span>
+      </div>
+      <div class="milestones-row" id="milestonesRow"></div>
+    </div>
+
+    <div class="streak-row">
+      <div class="streak-card">
+        <div class="streak-icon flame">🔥</div>
+        <div class="streak-info"><div class="streak-label">Current Streak</div><div class="streak-value" id="journeyCurrentStreak">0 days</div></div>
+      </div>
+      <div class="streak-card">
+        <div class="streak-icon star">⭐</div>
+        <div class="streak-info"><div class="streak-label">Longest Streak</div><div class="streak-value" id="journeyLongestStreak">0 days</div></div>
+      </div>
+    </div>
+
+    <div class="journey-daylist-head">Day by day</div>
+    <div class="journey-body">
+      <div class="journey-legend">
+        <span><span class="legend-dot" style="background:linear-gradient(135deg,#A78BFA,#F0A0C0)"></span>Complete</span>
+        <span><span class="legend-dot" style="background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.14)"></span>Missed</span>
+        <span><span class="legend-dot" style="background:linear-gradient(135deg,#F0CE8F,#F0A0C0)"></span>Milestone</span>
+      </div>
+      <div class="journey-track" id="journeyTrack"></div>
+    </div>
+  </section>
+
+  <!-- ================= REWARDS ================= -->
+  <section class="screen" id="screen-rewards">
+    <div class="header" style="padding-bottom:6px;">
+      <div class="greeting-row"><p class="page-title" style="flex:1;">Rewards</p><span class="wallet-chip" id="walletChip">◆ 0</span></div>
+    </div>
+    <div class="rewards-body">
+      <div class="glass-card">
+        <div class="progress-label-row"><span class="progress-label">Active this week</span><span class="progress-pct" id="weekActivePct">0/7</span></div>
+        <div class="progress-track"><div class="progress-fill" id="weekActiveFill" style="width:0%"></div></div>
+        <div class="progress-caption">Days with at least one habit completed.</div>
+      </div>
+
+      <div class="badges-section-head">
+        <span class="bs-title">Badges</span>
+        <span class="bs-count" id="badgesCount">0 earned</span>
+      </div>
+      <div class="badges-grid" id="badgesGrid"></div>
+      <div class="empty-inline" id="badgesEmpty" style="margin:-10px 0 20px;">Hit a milestone on your Journey to earn your first badge.</div>
+
+      <div class="reward-grid" id="rewardGrid"></div>
+      <button class="add-habit" id="addRewardBtn"><span class="add-plus">+</span><span>Add reward</span></button>
+      <button class="link-btn" id="viewXpHistoryBtn" style="align-self:center;">View XP history →</button>
+    </div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section class="screen" id="screen-budget">
+    <div class="header" style="padding-bottom:6px;">
+      <div class="greeting-row">
+        <p class="page-title" style="flex:1;">Budget</p>
+      </div>
+    </div>
+    <div class="budget-body">
+
+      <!-- TOTAL (collapsed by default) -->
+      <details class="budget-accordion">
+        <summary>
+          <span class="acc-title">Total money</span>
+          <span class="acc-value" id="accTotalValue">₹0</span>
+          <span class="acc-chevron">›</span>
+        </summary>
+        <div class="acc-content">
+          <div class="balance-line" id="totalBalanceLine">Add the money you've received to start tracking.</div>
+          <button class="tier-edit-pill" id="addMoneyBtn" style="margin:10px 0 14px;"><span class="add-plus">+</span><span>Add money</span></button>
+          <div class="deposit-list" id="depositList"></div>
+          <div class="empty-inline" id="depositEmpty">Log pocket money, allowance or anything else you're given, and it'll show up here like a running history.</div>
+        </div>
+      </details>
+
+      <!-- MONTHLY (always visible — the main hero) -->
+      <div class="budget-hero glass-card">
+        <div class="budget-hero-head">
+          <span class="tier-label">Monthly budget</span>
+          <div class="month-switch" id="monthSwitch">
+            <button class="month-arrow" id="monthPrevBtn" aria-label="Previous month">‹</button>
+            <span class="month-label" id="monthLabelText">Month</span>
+            <button class="month-arrow" id="monthNextBtn" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="gauge-row">
+          <div class="donut-gauge" id="monthlyGauge">
+            <div class="donut-hole"><span id="donutPct">0%</span><span class="donut-sub">spent</span></div>
+          </div>
+          <div class="gauge-legend">
+            <div class="gauge-legend-row"><span class="dot" style="background:linear-gradient(135deg,#9C8CE0,#DB9BAB)"></span><div><div class="gl-label">Spent</div><div class="gl-value" id="gaugeSpent">₹0</div></div></div>
+            <div class="gauge-legend-row"><span class="dot" style="background:#EFE9F5"></span><div><div class="gl-label">Left</div><div class="gl-value" id="gaugeLeft">₹0</div></div></div>
+          </div>
+        </div>
+        <button class="tier-edit-pill" id="editBudgetCard"><span id="tierMonthlyAmount">Planned: ₹0</span><span class="pencil">✎</span></button>
+        <div class="balance-line" id="monthlyBalanceLine" style="margin-top:12px;"></div>
+      </div>
+
+      <!-- WEEKLY (collapsed by default) -->
+      <details class="budget-accordion">
+        <summary>
+          <span class="acc-title">Weekly budget</span>
+          <span class="acc-value" id="accWeeklyValue">₹0</span>
+          <span class="acc-chevron">›</span>
+        </summary>
+        <div class="acc-content">
+          <div class="week-range-chip" id="weekRangeText" style="margin-bottom:10px; display:inline-block;">This week</div>
+          <div class="glass-card progress-card">
+            <div class="progress-label-row"><span class="progress-label" id="weekSpentLabel">₹0 spent</span><span class="progress-pct" id="weekSpentPct">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="weekSpentFill" style="width:0%"></div></div>
+            <div class="progress-caption" id="weekCaption">Set a weekly target to start tracking.</div>
+          </div>
+          <button class="tier-edit-pill" id="editWeeklyBudgetBtn" style="margin-top:10px;"><span id="tierWeeklyAmount">Target: ₹0</span><span class="pencil">✎</span></button>
+          <div class="balance-line" id="weeklyBalanceLine" style="margin-top:10px;"></div>
+        </div>
+      </details>
+
+      <div class="headline-note" id="budgetNoteCard" style="display:none;"></div>
+
+      <div class="budget-section">
+        <div class="budget-section-head">
+          <span class="progress-label">Upcoming expenses <span class="sub-hint">(you might have)</span></span>
+          <button class="pill-add-btn" id="addPlannedBtn"><span class="add-plus">+</span><span>Add</span></button>
+        </div>
+        <div class="planned-list" id="plannedList"></div>
+        <div class="empty-inline" id="plannedEmpty">Note down things you know you'll need to buy — even months ahead — so you always know what's actually free to spend.</div>
+      </div>
+
+      <details class="budget-accordion">
+        <summary>
+          <span class="acc-title">Expenses logged</span>
+          <span class="acc-value" id="accExpenseCount">0</span>
+          <span class="acc-chevron">›</span>
+        </summary>
+        <div class="acc-content">
+          <button class="pill-add-btn" id="addExpenseBtn" style="margin-bottom:10px;"><span class="add-plus">+</span><span>Add</span></button>
+          <div class="expense-list" id="expenseList"></div>
+          <div class="empty-inline" id="expenseEmpty">Log what you spend to keep this in sync with reality.</div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="screen" id="screen-stats">
+    <div class="header" style="padding-bottom:6px;"><p class="page-title">Stats</p></div>
+    <div class="stats-body">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-label">Level</div><div class="stat-value" id="statLevel">1</div><div class="stat-sub" id="statXP">0 XP</div></div>
+        <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value" id="statStreak">0</div><div class="stat-sub" id="statLongest">Longest: 0 days</div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-label">Total days active</div><div class="stat-value" id="statTotalDays">0</div><div class="stat-sub" id="statChapter">Chapter 1 · Day 1</div></div>
+        <div class="stat-card"><div class="stat-label">Overall completion</div><div class="stat-value" id="statCompletion">0%</div><div class="stat-sub">All-time</div></div>
+      </div>
+      <div class="glass-card">
+        <div class="progress-label" style="margin-bottom:12px;">Last 7 days</div>
+        <div class="week-row" id="weekRow"></div>
+      </div>
+      <div class="glass-card">
+        <div class="progress-label" style="margin-bottom:12px;">This month · <span id="heatmapMonthLabel">—</span></div>
+        <div class="heatmap-weekday-row"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="heatmap" id="heatmap"></div>
+      </div>
+      <div class="glass-card">
+        <div class="progress-label" style="margin-bottom:12px;">Category performance</div>
+        <div id="catPerf"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SETTINGS (secondary) ================= -->
+  <section class="screen" id="screen-settings">
+    <div class="header" style="padding-bottom:6px;"><p class="page-title">Settings</p></div>
+    <div class="settings-list" id="settingsList"></div>
+  </section>
+  <section class="screen" id="screen-settings-detail">
+    <div class="back-row" id="settingsBackBtn">← Back to Settings</div>
+    <div class="settings-detail" id="settingsDetailBody"></div>
+  </section>
+
+  <!-- ================= NAV ================= -->
+  <div class="nav-wrap" id="navWrap">
+    <div class="nav-bar">
+      <div class="nav-indicator" id="navIndicator"></div>
+      <button class="nav-tab active" data-tab="today"><span class="icon">☀</span><span class="label">Today</span></button>
+      <button class="nav-tab" data-tab="journey"><span class="icon">•••</span><span class="label">Journey</span></button>
+      <button class="nav-tab" data-tab="rewards"><span class="icon"><span class="diamond"></span></span><span class="label">Rewards</span></button>
+      <button class="nav-tab" data-tab="budget"><span class="icon">₹</span><span class="label">Budget</span></button>
+      <button class="nav-tab" data-tab="stats"><span class="icon"><span class="bars"><div style="height:6px"></div><div style="height:11px"></div><div style="height:15px"></div></span></span><span class="label">Stats</span></button>
+    </div>
+  </div>
+
+  <!-- ================= GENERIC SHEET ================= -->
+  <div class="sheet-overlay" id="sheetOverlay">
+    <div class="sheet" id="sheetBody"></div>
+  </div>
+
+  <!-- ================= MILESTONE ================= -->
+  <div class="milestone-screen" id="milestoneScreen">
+    <div class="milestone-particles" id="milestoneParticles"></div>
+    <h1>Chapter One, complete.</h1>
+    <p>66 days ago you started. Nothing resets from here — your progress, your history, all of it comes with you.</p>
+    <div class="milestone-badge-line" id="milestoneBadgeLine"></div>
+    <button class="primary-btn" id="continueChapter2Btn">Continue to Chapter Two</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="db.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
